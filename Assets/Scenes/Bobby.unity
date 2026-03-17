@@ -248,10 +248,15 @@ MonoBehaviour:
   hudPanel: {fileID: 1461802830}
   pausePanel: {fileID: 1767696667}
   dashboardPanel: {fileID: 1331749796}
+  analyticsPanel: {fileID: 0}
+  graphPanel: {fileID: 0}
   startButton: {fileID: 228713212}
   beginnerBtn: {fileID: 1262328438}
   moderateBtn: {fileID: 1695009948}
   expertBtn: {fileID: 1317484745}
+  dashboardNxtBtn: {fileID: 0}
+  analyticsNxtBtn: {fileID: 0}
+  graphNxtBtn: {fileID: 0}
 --- !u!1 &64700881
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +601,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1305262, y: 0, z: 0, w: 0.9914449}
-  m_LocalPosition: {x: 0, y: 5, z: -10}
+  m_LocalPosition: {x: 0, y: 3.23, z: -4.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1063,13 +1068,28 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cbe62f7a41f040e479eaf8ecc010e004,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.74999994
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbe62f7a41f040e479eaf8ecc010e004,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.74999994
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbe62f7a41f040e479eaf8ecc010e004,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.74999994
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbe62f7a41f040e479eaf8ecc010e004,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cbe62f7a41f040e479eaf8ecc010e004,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cbe62f7a41f040e479eaf8ecc010e004,
         type: 3}
@@ -1110,6 +1130,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbe62f7a41f040e479eaf8ecc010e004,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -985542389825260074, guid: cbe62f7a41f040e479eaf8ecc010e004,
         type: 3}
@@ -1287,6 +1312,7 @@ MonoBehaviour:
   gameManager: {fileID: 802350960}
   difficultyScaler: {fileID: 802350959}
   maxHealth: 100
+  currentHealth: 0
   maxAmmo: 10
   shieldDuration: 2
 --- !u!1 &765240019
@@ -1622,6 +1648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 802350960}
   difficultyScaler: {fileID: 802350959}
+  sessionTimeLimit: 120
 --- !u!114 &802350958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3986,8 +4013,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 802350960}
   difficultyScaler: {fileID: 802350959}
-  player: {fileID: 0}
-  enemyPrefab: {fileID: -8586104294293681367, guid: e3cf0fdf155efe9478f86f3b13b06751,
+  player: {fileID: 635670743}
+  enemyPrefab: {fileID: 539161037513445328, guid: 29bb9addcd071b8448dbed3a1d5c2d8d,
     type: 3}
   spawnWidth: 8
   spawnDistance: 30
