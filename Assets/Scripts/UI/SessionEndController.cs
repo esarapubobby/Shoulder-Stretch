@@ -1,21 +1,39 @@
+using System;
 using UnityEngine;
 public class SessionEndController : MonoBehaviour
 {
-    [SerializeField] private PlayerController player;
+    [SerializeField] private FitnessTrackingSystem fitness;
     [SerializeField] private GameStateManager gameManager;
-    [SerializeField] private GameObject hudCanvas, dashboardCanvas;
+    [SerializeField] private InputSystem input;
+    [SerializeField] private ScoringSystem score;
+
+    public static GameData currentSession {  get; private set; }
+
     private void Start()
     {
-        if (player == null) player = FindFirstObjectByType<PlayerController>();
+        if (fitness == null) fitness = FindFirstObjectByType<FitnessTrackingSystem>();
         if (gameManager == null) gameManager = FindFirstObjectByType<GameStateManager>();
-        if (player != null) player.OnPlayerDeath += HandlePlayerDeath;
+        if (input == null) input = FindFirstObjectByType<InputSystem>();
+        if (score == null) score = FindFirstObjectByType<ScoringSystem>();
+        gameManager.OnStateChanged += HandleStateChange;
     }
-    private void OnDestroy() { if (player != null) player.OnPlayerDeath -= HandlePlayerDeath; }
-    private void HandlePlayerDeath()
+
+    private void HandleStateChange(GameState state)
     {
-        //Time.timeScale = 0f;
-        //if (hudCanvas) hudCanvas.SetActive(false);
-        //if (dashboardCanvas) dashboardCanvas.SetActive(true);
-        //if (gameManager) gameManager.SetStateDirectly(GameState.Dashboard);
+        if(state == GameState.Dashboard){
+            currentSession = new GameData
+            {
+                time = $"{System.TimeSpan.FromSeconds(fitness.Duration):mm\\:ss}",
+                calories = Mathf.Round(fitness.Calories),
+                leftActions = input.LeftActionCount,
+                rightActions = input.RightActionCount,
+                accuracy = (float) Math.Round(input.AccuracyPercentage, 2),
+                finalScore = score.CurrentScore
+            };
+
+        }
     }
+
+
+
 }

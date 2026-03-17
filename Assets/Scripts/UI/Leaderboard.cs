@@ -9,24 +9,27 @@ public class LeaderBoard : MonoBehaviour
     public Transform entryTemplate;
     private List<LeaderboardEntryData> leaderboardEntryDataList = new List<LeaderboardEntryData>();
     private List<Transform> leaderboardEntryTransformList = new List<Transform>();
-    //public  GameManager gameManager;
-    //private GameData gameData;
     public float templateHeight = 30f;
 
 
-    private void Awake()
+    private void OnEnable()
     {
-        
+        if(SessionEndController.currentSession == null)
+        {
+            Debug.Log("Session Data is not Recevied Yet");
+            return;
+        }
 
-        //gameData = gameManager.GetSessionResults();
+
 
         entryTemplate.gameObject.SetActive(false);
+        
 
-        //AddNewEntry("Bobby", gameData.time, gameData.moneyPerCargo * gameData.cargo, gameData.cargo, gameData.finalScore);
+        AddNewEntry("Badri", SessionEndController.currentSession.time.ToString(), SessionEndController.currentSession.accuracy, SessionEndController.currentSession.calories, SessionEndController.currentSession.finalScore);
 
 
 
-        string jsonString = PlayerPrefs.GetString("leaderboardEntries");
+        string jsonString = PlayerPrefs.GetString("ZleaderboardEntries");
 
         LeaderboardEntries leaderboard = JsonUtility.FromJson<LeaderboardEntries>(jsonString);
 
@@ -50,13 +53,13 @@ public class LeaderBoard : MonoBehaviour
         }
     }
 
-    private void AddNewEntry(string name, string time, int earnings,int cargo, float score)
+    private void AddNewEntry(string name, string time, float accuracy,float calories, float score)
     {
         //create entry
-        LeaderboardEntryData entry = new LeaderboardEntryData { playerName = name, time = time, earnings = earnings, cargo = cargo, score = score };
+        LeaderboardEntryData entry = new LeaderboardEntryData { playerName = name, time = time, accuracy = accuracy, calories = calories, score = score };
 
         //load current entries data if not present fill empty string
-        string jsonString = PlayerPrefs.GetString("leaderboardEntries", "");
+        string jsonString = PlayerPrefs.GetString("ZleaderboardEntries", "");
 
         LeaderboardEntries entries;
         if (jsonString != null && jsonString != "")
@@ -72,7 +75,7 @@ public class LeaderBoard : MonoBehaviour
         //update and save
         entries.leaderboardEntryDataList.Add(entry);
         string json = JsonUtility.ToJson(entries);
-        PlayerPrefs.SetString("leaderboardEntries", json);
+        PlayerPrefs.SetString("ZleaderboardEntries", json);
         PlayerPrefs.Save();
 
     }
@@ -105,11 +108,11 @@ public class LeaderBoard : MonoBehaviour
         string time = leaderboardEntryData.time;
         entryTransform.Find("Time").GetComponent<TextMeshProUGUI>().text = time;
 
-        //int earnings = leaderboardEntryData.cargo * gameData.moneyPerCargo;
-        //entryTransform.Find("Earnings").GetComponent<TextMeshProUGUI>().text = earnings.ToString();
+        float accuracy = leaderboardEntryData.accuracy;
+        entryTransform.Find("Accuracy").GetComponent<TextMeshProUGUI>().text = accuracy.ToString() + "%";
 
-        int cargo = leaderboardEntryData.cargo;
-        entryTransform.Find("Cargo Collected").GetComponent<TextMeshProUGUI>().text = cargo.ToString();
+        float calories = leaderboardEntryData.calories;
+        entryTransform.Find("Calories").GetComponent<TextMeshProUGUI>().text = calories.ToString();
 
         float score = leaderboardEntryData.score;
         entryTransform.Find("Score").GetComponent<TextMeshProUGUI>().text = score.ToString();
@@ -123,7 +126,7 @@ public class LeaderBoard : MonoBehaviour
 
     public void ClearLeaderboardData()
     {
-        PlayerPrefs.DeleteKey("leaderboardEntries");
+        PlayerPrefs.DeleteKey("ZleaderboardEntries");
         PlayerPrefs.Save();
         Debug.Log("Leaderboard data cleared");
     }
@@ -140,8 +143,8 @@ public class LeaderBoard : MonoBehaviour
     {
         public string playerName;
         public string time;
-        public int earnings;
-        public int cargo;
+        public float accuracy;
+        public float calories;
         public float score;
     }
 }

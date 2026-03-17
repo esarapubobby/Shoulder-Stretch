@@ -19,24 +19,20 @@ public class CombatSystem : MonoBehaviour
         if (!success) return;
         switch (action)
         {
-            case ActionType.LeftPunch: PerformPunch(true); break;
-            case ActionType.RightPunch: PerformPunch(false); break;
-            case ActionType.PickupGun: player?.AddAmmo(3); break;
-            case ActionType.Shoot: PerformShoot(); break;
-            case ActionType.Shield: player?.ActivateShield(); break;
+            case ActionType.leftShoot: PerforLeftShoot(); break;
+            case ActionType.rightShoot: PerforRightShoot(); break;
         }
     }
-    private void PerformPunch(bool isLeft)
-    {
-        Vector3 origin = transform.position + transform.forward + (isLeft ? -transform.right : transform.right);
-        Collider[] hits = Physics.OverlapSphere(origin, punchRange);
-        foreach (var hit in hits) if (hit.TryGetComponent<Enemy>(out var enemy)) enemy.TakeDamage(punchDamage);
-        
-    }
+
     
-    private void PerformShoot()
+    private void PerforLeftShoot()
     {
         if (player == null || !player.UseAmmo()) return;
-        if (Physics.Raycast(transform.position, transform.forward, out var hit, shootRange)) if (hit.collider.TryGetComponent<Enemy>(out var enemy)) enemy.TakeDamage(shootDamage);
+       
+    }
+
+    private void PerforRightShoot()
+    {
+        if (player == null || !player.UseAmmo()) return;
     }
 }

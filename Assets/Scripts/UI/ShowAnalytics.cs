@@ -6,36 +6,38 @@ using TMPro;
 public class ShowAnalytics : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI compltetionTime; 
-    [SerializeField] TextMeshProUGUI collisionCount; 
-    [SerializeField] TextMeshProUGUI highestCargoStack; 
-    [SerializeField] TextMeshProUGUI earnings; 
+    [SerializeField] TextMeshProUGUI leftActions; 
+    [SerializeField] TextMeshProUGUI rightActions; 
+    [SerializeField] TextMeshProUGUI calories; 
     [SerializeField] TextMeshProUGUI score;
 
-    [SerializeField] TextMeshProUGUI sit2StandReps;
-    [SerializeField] TextMeshProUGUI totalHoldTime;
-    [SerializeField] TextMeshProUGUI postureBreaks;
-    [SerializeField] TextMeshProUGUI reactionTime;
-    [SerializeField] TextMeshProUGUI estimatedCalBurned;
+    [SerializeField] TextMeshProUGUI DummyData1;
+    [SerializeField] TextMeshProUGUI DummyData2;
+    [SerializeField] TextMeshProUGUI DummyData3;
+    [SerializeField] TextMeshProUGUI DummyData4;
+    [SerializeField] TextMeshProUGUI DummyData5;
 
-   
 
-    //public void UpdateAnalyticsDisplay(GameData gameData)
-    //{
-    //    if (gameData == null) return;
-    //    //game related 
-    //    compltetionTime.text = gameData.time;
-    //    collisionCount.text = gameData.collisionCount.ToString();
-    //    highestCargoStack.text = gameData.totalCargoCollected.ToString();
-    //    earnings.text = (gameData.cargo * gameData.moneyPerCargo).ToString();
-    //    score.text = gameData.finalScore.ToString();
 
-    //    //exercise related
-    //    sit2StandReps.text = gameData.reps.ToString();
-    //    totalHoldTime.text = gameData.totalHoldTime.ToString();
-    //    postureBreaks.text = gameData.postureBreaks.ToString();
-    //    reactionTime.text = gameData.reactionTime.ToString();
-    //    estimatedCalBurned.text = gameData.calories.ToString();
-    //}
+    public void OnEnable()
+    {
+        GameData gameData = SessionEndController.currentSession;
+
+        if (gameData == null) return;
+
+        compltetionTime.text = gameData.time;
+        leftActions.text = gameData.leftActions.ToString();
+        rightActions.text = gameData.rightActions.ToString();
+        calories.text = gameData.calories.ToString();
+        score.text = gameData.finalScore.ToString();
+
+        //dummy data
+        DummyData1.text = gameData.dummy1.ToString();
+        DummyData2.text = gameData.dummy2.ToString();
+        DummyData3.text = gameData.dummy3.ToString();
+        DummyData4.text = gameData.dummy4.ToString();
+        DummyData5.text = gameData.dummy5.ToString();
+    }
 
 
 }
