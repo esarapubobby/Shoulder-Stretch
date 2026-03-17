@@ -22,11 +22,10 @@ public class GraphController : MonoBehaviour
     {
         graphCotainer = GetComponent<RectTransform>();
         //List<int> valueList = new List<int>() { 5, 38, 56, 45, 78, 32, 12, 38, 56, 23, 98, 54, 5, 38, 56, 45 };
-        string jsonStrng = PlayerPrefs.GetString("leaderboardEntries");
-        Debug.Log(jsonStrng);
+        string jsonStrng = PlayerPrefs.GetString("ZleaderboardEntries");
         LeaderBoard.LeaderboardEntries entries = JsonUtility.FromJson<LeaderBoard.LeaderboardEntries>(jsonStrng);
 
-        Debug.Log(entries.leaderboardEntryDataList);
+
         if(entries != null && entries.leaderboardEntryDataList != null && entries.leaderboardEntryDataList.Count != 0)
         {
             ShowGraph(entries.leaderboardEntryDataList);

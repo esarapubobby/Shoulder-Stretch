@@ -63,14 +63,20 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy()
     {
         Enemy enemy = GetFromPool();
-        float xOffset;
+        //float xOffset;
 
-        if (Random.value > 0.5f)
-            xOffset = Random.Range(2f, spawnWidth);     
-        else
-            xOffset = Random.Range(-spawnWidth, -2f);
-        Vector3 pos = player.transform.position + Vector3.forward * spawnDistance + Vector3.right * xOffset;
+        //if (Random.value > 0.5f)
+        //    xOffset = Random.Range(2f, spawnWidth);     
+        //else
+        //    xOffset = Random.Range(-spawnWidth, -2f);
+        //Vector3 pos = player.transform.position + Vector3.forward * spawnDistance + Vector3.right * xOffset;
+
+        bool spwanLeft = Random.value < 0.5;
+        float laneX = spwanLeft ? -3f : 3f;
+        Vector3 pos = new Vector3(laneX, 0, spawnDistance);
+
         enemy.transform.position = pos;
+        enemy.lane = spwanLeft? Enemy.Lane.Left : Enemy.Lane.Right;
         enemy.Initialize(player.transform);
         spawnedCount++;
     }

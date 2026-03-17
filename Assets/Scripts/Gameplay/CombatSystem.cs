@@ -7,6 +7,8 @@ public class CombatSystem : MonoBehaviour
     [SerializeField] private int punchDamage = 50;
     [SerializeField] private float shootRange = 50f;
     [SerializeField] private int shootDamage = 100;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject bulletTarget;
     private void Start()
     {
         if (inputSystem == null) inputSystem = FindFirstObjectByType<InputSystem>();
@@ -19,24 +21,48 @@ public class CombatSystem : MonoBehaviour
         if (!success) return;
         switch (action)
         {
-            case ActionType.LeftPunch: PerformPunch(true); break;
-            case ActionType.RightPunch: PerformPunch(false); break;
-            case ActionType.PickupGun: player?.AddAmmo(3); break;
-            case ActionType.Shoot: PerformShoot(); break;
-            case ActionType.Shield: player?.ActivateShield(); break;
+            case ActionType.leftShoot: PerforLeftShoot(); break;
+            case ActionType.rightShoot: PerforRightShoot(); break;
         }
     }
-    private void PerformPunch(bool isLeft)
-    {
-        Vector3 origin = transform.position + transform.forward + (isLeft ? -transform.right : transform.right);
-        Collider[] hits = Physics.OverlapSphere(origin, punchRange);
-        foreach (var hit in hits) if (hit.TryGetComponent<Enemy>(out var enemy)) enemy.TakeDamage(punchDamage);
-        
-    }
+
     
-    private void PerformShoot()
+    private void PerforLeftShoot()
     {
         if (player == null || !player.UseAmmo()) return;
-        if (Physics.Raycast(transform.position, transform.forward, out var hit, shootRange)) if (hit.collider.TryGetComponent<Enemy>(out var enemy)) enemy.TakeDamage(shootDamage);
+
+        ShootAtLane(Enemy.Lane.Left);
+    }
+
+    private void PerforRightShoot()
+    {
+        if (player == null || !player.UseAmmo()) return;
+
+        ShootAtLane(Enemy.Lane.Right);
+
+    }
+
+
+    private void ShootAtLane(Enemy.Lane targetLane)
+    {
+        Enemy[] enemies = GetComponentsInChildren<Enemy>();
+        Enemy closest = null;
+        float minDist = shootRange;
+
+        foreach(Enemy enemy in enemies)
+        {
+            if (!enemy.gameObject.activeInHierarchy) continue;
+            if(enemy.lane != targetLane) continue;
+
+            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            if(dist < minDist)
+            {
+                closest = enemy;
+                minDist = dist;
+            }
+        }
+
+        if (closest != null) closest.TakeDamage(shootDamage);
+
     }
 }
