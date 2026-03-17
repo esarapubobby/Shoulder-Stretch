@@ -15,6 +15,9 @@ public class Enemy : MonoBehaviour
     private GameObject HealthPack;
     private Transform packParent;
     private Vector3 packLocalPos;
+
+    public enum Lane { Left, Right};
+    public Lane lane;
     void Awake()
     {
         HealthPack=transform.Find("HealthPack").gameObject;

@@ -54,7 +54,7 @@ public class InputSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             TryPerformAction(ActionType.rightShoot);
-            animator.SetTrigger("LeftShoot");
+            animator.SetTrigger("RightShoot");
         }
 
     }
