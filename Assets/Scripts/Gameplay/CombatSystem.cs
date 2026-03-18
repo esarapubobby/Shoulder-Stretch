@@ -3,13 +3,10 @@ public class CombatSystem : MonoBehaviour
 {
     [SerializeField] private InputSystem inputSystem;
     [SerializeField] private PlayerController player;
-    [SerializeField] private float punchRange = 4f;
-    [SerializeField] private int punchDamage = 50;
     [SerializeField] private float shootRange = 50f;
     [SerializeField] private int shootDamage = 100;
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private GameObject bulletTarget;
     [SerializeField] private EnemySpawner spawner;
+    [SerializeField] private CameraFollow camera;
     private void Start()
     {
         if (inputSystem == null) inputSystem = FindFirstObjectByType<InputSystem>();
@@ -34,6 +31,7 @@ public class CombatSystem : MonoBehaviour
         if (player == null || !player.UseAmmo()) return;
 
         ShootAtLane(Enemy.Lane.Left);
+        camera.Shake(0.1f, 0.2f);
     }
 
     private void PerforRightShoot()
@@ -41,7 +39,7 @@ public class CombatSystem : MonoBehaviour
         if (player == null || !player.UseAmmo()) return;
 
         ShootAtLane(Enemy.Lane.Right);
-
+        camera.Shake(0.1f, 0.2f);
     }
 
 
