@@ -10,6 +10,9 @@ public class CombatSystem : MonoBehaviour
     [SerializeField] private BulletTracer bulletTracer;
     [SerializeField] private ParticleSystem muzzelFlash;
     [SerializeField] private Transform barrel;
+    [SerializeField] AudioSource audioSource;
+
+    [SerializeField] private AudioClip audioClipShoot;
     private void Start()
     {
         if (inputSystem == null) inputSystem = FindFirstObjectByType<InputSystem>();
@@ -34,6 +37,7 @@ public class CombatSystem : MonoBehaviour
         if (player == null || !player.UseAmmo()) return;
 
         ShootAtLane(Enemy.Lane.Left);
+        audioSource.PlayOneShot(audioClipShoot);
         cameraFollow.Shake(0.1f, 0.2f);
     }
 
@@ -42,6 +46,8 @@ public class CombatSystem : MonoBehaviour
         if (player == null || !player.UseAmmo()) return;
 
         ShootAtLane(Enemy.Lane.Right);
+        audioSource.PlayOneShot(audioClipShoot);
+
         cameraFollow.Shake(0.1f, 0.2f);
     }
 
@@ -70,7 +76,13 @@ public class CombatSystem : MonoBehaviour
         muzzelFlash.Play();
         bulletTracer.Fire(barrel.position, endPoint);
 
-        if (closest != null) closest.TakeDamage(shootDamage);
+        
+        if (closest != null) 
+        {
+
+            closest.TakeDamage(shootDamage);
+
+        }
 
     }
 }

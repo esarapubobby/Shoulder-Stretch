@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
@@ -24,6 +25,13 @@ public class Enemy : MonoBehaviour
 
     private bool hasAttacked = false;
 
+    private SkinnedMeshRenderer[] renderers;
+    private Material[] originalMaterials;
+
+    [SerializeField] AudioSource audioSource;
+
+    [SerializeField] private AudioClip audioClipZombie;
+
     
 
     void Start()
@@ -37,7 +45,16 @@ public class Enemy : MonoBehaviour
         packParent = AmmoPack.transform.parent;
         packLocalPos = AmmoPack.transform.localPosition;
 
-    }
+        renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        originalMaterials = new Material[renderers.Length];
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            originalMaterials[i] = renderers[i].sharedMaterial;
+        }
+
+        }
     public void Initialize(Transform target)
     {
         player = target;
@@ -45,6 +62,12 @@ public class Enemy : MonoBehaviour
         currentHealth = health;
 
         hasAttacked = false;
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material = originalMaterials[i];
+        }
+
 
         if (AmmoPack != null)
         {
@@ -104,6 +127,8 @@ public class Enemy : MonoBehaviour
     {
         currentHealth -= amount;
         deathParticle.Play();
+
+        HitEffect();
         if (currentHealth <= 0) Die();
     }
     private void Die()
@@ -117,11 +142,33 @@ public class Enemy : MonoBehaviour
              
         }
         animator.SetTrigger("IsDead");
+        audioSource.PlayOneShot(audioClipZombie);
         Invoke(nameof(DisableEnemy), 2f);
     }
     void DisableEnemy()
     {
         OnEnemyDeath?.Invoke(this);
         gameObject.SetActive(false);
+    }
+    public void HitEffect()
+    {
+        StartCoroutine(HitFlash());
+    }
+
+    IEnumerator HitFlash()
+    {
+        
+        foreach (var r in renderers)
+        {
+            r.material.SetColor("_BaseColor", Color.red);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material = originalMaterials[i];
+        }
     }
 }
