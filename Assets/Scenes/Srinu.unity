@@ -7297,6 +7297,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   currentDifficulty: 1
+  enemy: {fileID: 0}
+  playerController: {fileID: 0}
+  enemySpawner: {fileID: 0}
 --- !u!4 &802350961
 Transform:
   m_ObjectHideFlags: 0
@@ -21807,7 +21810,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 9155921858628269061, guid: 59eae363a370d7144a2c33cf5640045c,
     type: 3}
   spawnWidth: 8
-  spawnDistance: 30
+  spawnDistance: 10
   Zombies: 10
   SpawnDuration: 10
   activeEnemies: []
